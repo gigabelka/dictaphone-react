@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useReducer, useCallback, useRef } from "react";
 import {
   concatTranscripts,
@@ -12,14 +13,15 @@ import NativeSpeechRecognition from "./NativeSpeechRecognition";
 
 let _browserSupportsSpeechRecognition = !!NativeSpeechRecognition;
 let _browserSupportsContinuousListening = _browserSupportsSpeechRecognition;
-let recognitionManager;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let recognitionManager: any;
 
-const useSpeechRecognition = ({
+export const useSpeechRecognition = ({
   transcribing = true,
   clearTranscriptOnListen = true,
   commands = [],
 } = {}) => {
-  const [recognitionManager] = useState(
+  const [recognitionManager] = useState<any>(
     SpeechRecognition.getRecognitionManager()
   );
   const [
@@ -53,7 +55,11 @@ const useSpeechRecognition = ({
     dispatchClearTranscript();
   }, [recognitionManager]);
 
-  const testFuzzyMatch = (command, input, fuzzyMatchingThreshold) => {
+  const testFuzzyMatch = (
+    command: any,
+    input: any,
+    fuzzyMatchingThreshold: any
+  ) => {
     const commandToString =
       typeof command === "object" ? command.toString() : command;
     const commandWithoutSpecials = commandToString
@@ -75,7 +81,7 @@ const useSpeechRecognition = ({
     return null;
   };
 
-  const testMatch = (command, input) => {
+  const testMatch = (command: any, input: any) => {
     const pattern = commandToRegExp(command);
     const result = pattern.exec(input);
     if (result) {
@@ -88,7 +94,7 @@ const useSpeechRecognition = ({
   };
 
   const matchCommands = useCallback(
-    (newInterimTranscript, newFinalTranscript) => {
+    (newInterimTranscript: any, newFinalTranscript: any) => {
       commandsRef.current.forEach(
         ({
           command,
@@ -116,7 +122,7 @@ const useSpeechRecognition = ({
             })
             .filter((x) => x);
           if (isFuzzyMatch && bestMatchOnly && results.length >= 2) {
-            results.sort((a, b) => b.howSimilar - a.howSimilar);
+            results.sort((a: any, b: any) => b.howSimilar - a.howSimilar);
             const { command, commandWithoutSpecials, howSimilar } = results[0];
             callback(commandWithoutSpecials, input, howSimilar, {
               command,
@@ -143,7 +149,7 @@ const useSpeechRecognition = ({
   );
 
   const handleTranscriptChange = useCallback(
-    (newInterimTranscript, newFinalTranscript) => {
+    (newInterimTranscript: any, newFinalTranscript: any) => {
       if (transcribing) {
         dispatch(appendTranscript(newInterimTranscript, newFinalTranscript));
       }
@@ -198,7 +204,7 @@ const useSpeechRecognition = ({
 };
 const SpeechRecognition = {
   counter: 0,
-  applyPolyfill: (PolyfillSpeechRecognition) => {
+  applyPolyfill: (PolyfillSpeechRecognition: any) => {
     if (recognitionManager) {
       recognitionManager.setSpeechRecognition(PolyfillSpeechRecognition);
     } else {
@@ -244,5 +250,4 @@ const SpeechRecognition = {
   browserSupportsContinuousListening: () => _browserSupportsContinuousListening,
 };
 
-export { useSpeechRecognition };
 export default SpeechRecognition;

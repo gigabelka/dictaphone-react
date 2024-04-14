@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/rules-of-hooks */
 // import { useState, useEffect } from "react";
 import { useSpeechRecognition } from "./SpeechRecognition/SpeechRecognition";
 import SpeechRecognition from "./SpeechRecognition/SpeechRecognition";
 import "./Dictaphones.css";
 
-const {
-  transcript,
-  interimTranscript,
-  finalTranscript,
-  resetTranscript,
-  listening,
-  browserSupportsSpeechRecognition,
-  isMicrophoneAvailable,
-} = useSpeechRecognition();
-
-// eslint-disable-next-line react-refresh/only-export-components
 export default () => {
+  const {
+    transcript,
+    interimTranscript,
+    finalTranscript,
+    resetTranscript,
+    listening,
+    browserSupportsSpeechRecognition,
+    isMicrophoneAvailable,
+  } = useSpeechRecognition();
+  console.log(transcript);
+
   // const [showFirstWidget, setShowFirstWidget] = useState<boolean>(true);
 
   const onClickStart = () => {
@@ -29,7 +31,7 @@ export default () => {
   };
 
   const onClickAbort = () => {
-    //
+    SpeechRecognition.abortListening;
   };
 
   const onClickCopy = () => {

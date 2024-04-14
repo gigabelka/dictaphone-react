@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { concatTranscripts, browserSupportsPolyfills } from "./utils";
 import { isNative } from "./NativeSpeechRecognition";
 
 export default class RecognitionManager {
+  listening(listening: any): [any, any] {
+    throw new Error("Method not implemented.");
+  }
+  interimTranscript: any;
   constructor(SpeechRecognition) {
     this.recognition = null;
     this.pauseAfterDisconnect = false;
